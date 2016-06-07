@@ -13,15 +13,20 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RemoveImageEvent;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
 import com.kcrason.kselectimages.utils.ImageDisplayer;
 import com.kcrason.kselectimages.utils.ShowUtils;
+import com.kcrason.kselectimages.utils.SnackBarUtils;
 import com.kcrason.kselectimages.widget.ViewPagerFixed;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -112,6 +117,7 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
     private void startRemoveImage(int location) {
         if (location + 1 <= mDataList.size()) {
             mDataList.remove(location);
+            SnackBarUtils.showSnackBar(ButterKnife.findById(this, R.id.rlayout_parent), getString(R.string.delete_sucess));
             EventBus.getDefault().post(new RemoveImageEvent(location));
             // 判断是否是最后一张图片，如果是，则不进行图片数量的重置显示
             if (location != 0) {

@@ -19,4 +19,5 @@
     <string name="image_amount_limit">最多只能选择9张图片</string>
     <string name="stretch">张</string>
     <string name="no_image">暂无图片</string>
+    <string name="delete_sucess">删除成功</string>
 </resources>
