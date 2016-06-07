@@ -1,7 +1,8 @@
 package com.kcrason.kselectimages.adapter;
 
+
 import android.content.Context;
-import android.graphics.Bitmap.Config;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kcrason.kselectimages.R;
-import com.kcrason.kselectimages.model.bean.Folder;
+import com.kcrason.kselectimages.model.Folder;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -144,7 +145,7 @@ public class FolderAdapter extends BaseAdapter {
             name.setText(data.name);
             size.setText(data.images.size() + mContext.getString(R.string.stretch));
             // 显示图片
-            Picasso.with(mContext).load(new File(data.cover.path)).placeholder(R.drawable.default_error).config(Config.RGB_565)
+            Picasso.with(mContext).load(new File(data.cover.path)).placeholder(R.drawable.default_error).config(Bitmap.Config.RGB_565)
                     .resize(mImageSize, mImageSize).centerCrop().into(cover);
         }
     }

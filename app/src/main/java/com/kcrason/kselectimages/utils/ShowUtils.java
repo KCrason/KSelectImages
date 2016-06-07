@@ -17,11 +17,16 @@ public class ShowUtils {
         builder.setTitle(activity.getString(R.string.prompt));
         builder.setMessage(msg);
         builder.setPositiveButton(activity.getString(android.R.string.yes), listener);
-        builder.setNegativeButton(activity.getString(android.R.string.no), listener);
+        builder.setNegativeButton(activity.getString(android.R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.show();
     }
 
-    public static ProgressDialog showProgressDialog(Activity activity,String msg) {
+    public static ProgressDialog showProgressDialog(Activity activity, String msg) {
         ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage(msg);
         progressDialog.show();

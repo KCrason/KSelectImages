@@ -34,8 +34,8 @@ import com.kcrason.kselectimages.adapter.FolderAdapter;
 import com.kcrason.kselectimages.adapter.ImageGridAdapter;
 import com.kcrason.kselectimages.event.RefreshImageSelect;
 import com.kcrason.kselectimages.interfaces.SelectImagesCallBack;
-import com.kcrason.kselectimages.model.bean.Folder;
-import com.kcrason.kselectimages.model.bean.Image;
+import com.kcrason.kselectimages.model.Folder;
+import com.kcrason.kselectimages.model.Image;
 import com.kcrason.kselectimages.utils.FileUtils;
 import com.squareup.picasso.Picasso;
 

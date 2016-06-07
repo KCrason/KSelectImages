@@ -1,7 +1,7 @@
 package com.kcrason.kselectimages.event;
 
 
-import com.kcrason.kselectimages.model.bean.Image;
+import com.kcrason.kselectimages.model.Image;
 
 public class RefreshImageSelect {
 	

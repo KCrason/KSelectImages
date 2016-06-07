@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.interfaces.SelectImagesCallBack;
-import com.kcrason.kselectimages.model.bean.Image;
+import com.kcrason.kselectimages.model.Image;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

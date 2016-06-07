@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RefreshImageSelect;
-import com.kcrason.kselectimages.model.bean.Image;
+import com.kcrason.kselectimages.model.Image;
 import com.kcrason.kselectimages.utils.ActivityManager;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
 import com.kcrason.kselectimages.utils.ImageDisplayer;

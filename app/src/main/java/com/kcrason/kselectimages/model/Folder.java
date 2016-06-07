@@ -1,4 +1,4 @@
-package com.kcrason.kselectimages.model.bean;
+package com.kcrason.kselectimages.model;
 
 import java.util.List;
 

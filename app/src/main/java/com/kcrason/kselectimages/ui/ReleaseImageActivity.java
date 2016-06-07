@@ -2,12 +2,13 @@ package com.kcrason.kselectimages.ui;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -48,6 +50,8 @@ public class ReleaseImageActivity extends Activity
     private ProgressDialog progressDialog;
 
     private ArrayList<String> mSelectPath = new ArrayList<>();
+
+    private static final int MSG_PB = 0x01;
 
 
     @BindView(R.id.rootView)
@@ -87,6 +91,7 @@ public class ReleaseImageActivity extends Activity
                 }
                 break;
             case R.id.txt_send:
+                sendSelectedImages();
                 break;
         }
     }
@@ -116,16 +121,13 @@ public class ReleaseImageActivity extends Activity
         overridePendingTransition(R.anim.selecter_image_alpha_enter, R.anim.selecter_image_alpha_exit);
     }
 
-    public static void actionStart(Context context, String imagePath, boolean isShare) {
-        Intent shareIntent = new Intent(context, ReleaseImageActivity.class);
-        shareIntent.putExtra("imagePath", imagePath);
-        shareIntent.putExtra("isShare", isShare);
-        context.startActivity(shareIntent);
-    }
+
+    private MessageHandler mMessageHandler;
 
     public void initViews() {
         ButterKnife.bind(this);
         ActivityManager.getInstance().addActivity(this);
+        mMessageHandler = new MessageHandler(this);
 
         mSelectPath = getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
 
@@ -162,11 +164,44 @@ public class ReleaseImageActivity extends Activity
                     }
                 }
                 createDialog();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(3000);
+                            mMessageHandler.sendEmptyMessage(MSG_PB);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             } else {
                 SnackBarUtils.showSnackBar(mRootView, getString(R.string.not_network));
             }
         } else {
             SnackBarUtils.showSnackBar(mRootView, getString(R.string.at_least_one_photo));
+        }
+    }
+
+
+    static class MessageHandler extends Handler {
+
+        WeakReference<Activity> mWeakReference;
+
+        public MessageHandler(ReleaseImageActivity releaseImageActivity) {
+            this.mWeakReference = new WeakReference<Activity>(releaseImageActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            ReleaseImageActivity releaseImageActivity = (ReleaseImageActivity) this.mWeakReference.get();
+            switch (msg.what) {
+                case MSG_PB:
+                    releaseImageActivity.progressDialog.dismiss();
+                    break;
+            }
         }
     }
 
@@ -214,15 +249,6 @@ public class ReleaseImageActivity extends Activity
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
-            case 0:
-                //确定
-                recoveryActivitys();
-                break;
-            //取消
-            case 1:
-                dialog.dismiss();
-                break;
-        }
+        recoveryActivitys();
     }
 }

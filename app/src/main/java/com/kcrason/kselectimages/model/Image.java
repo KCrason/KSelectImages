@@ -1,4 +1,4 @@
-package com.kcrason.kselectimages.model.bean;
+package com.kcrason.kselectimages.model;
 
 import java.io.Serializable;
 
@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by KCrason on 2016/6/7.
  */
 public class Image implements Serializable {
+
 
     public String path;
     public String name;
