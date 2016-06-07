@@ -14,6 +14,4 @@ public class RefreshImageSelect {
 	public Image getImage() {
 		return image;
 	}
-
-
 }

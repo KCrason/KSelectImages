@@ -129,7 +129,9 @@ public class ReleaseImageActivity extends Activity
         ActivityManager.getInstance().addActivity(this);
         mMessageHandler = new MessageHandler(this);
 
-        mSelectPath = getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
+        if (getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT) != null){
+            mSelectPath = getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
+        }
 
         mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         mAdapter = new ImagePublishAdapter(this, mSelectPath);
