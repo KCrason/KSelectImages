@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.TakePhotoEvent;
+import com.kcrason.kselectimages.interfaces.Callback;
 import com.kcrason.kselectimages.utils.ActivityManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by KCrason on 2016/6/7.
  */
-public class KSelectImagesActivity extends FragmentActivity implements KSelectImagesFragment.Callback {
+public class KSelectImagesActivity extends FragmentActivity implements Callback {
     /**
      * 最大图片选择次数，int类型，默认9
      */
@@ -73,13 +74,13 @@ public class KSelectImagesActivity extends FragmentActivity implements KSelectIm
         }
 
         Bundle bundle = new Bundle();
-        bundle.putInt(KSelectImagesFragment.EXTRA_SELECT_COUNT, mDefaultCount);
-        bundle.putInt(KSelectImagesFragment.EXTRA_SELECT_MODE, mode);
-        bundle.putBoolean(KSelectImagesFragment.EXTRA_SHOW_CAMERA, isShow);
-        bundle.putStringArrayList(KSelectImagesFragment.EXTRA_DEFAULT_SELECTED_LIST, resultList);
+        bundle.putInt(ImageZoomActivity.KSelectImagesFragment.EXTRA_SELECT_COUNT, mDefaultCount);
+        bundle.putInt(ImageZoomActivity.KSelectImagesFragment.EXTRA_SELECT_MODE, mode);
+        bundle.putBoolean(ImageZoomActivity.KSelectImagesFragment.EXTRA_SHOW_CAMERA, isShow);
+        bundle.putStringArrayList(ImageZoomActivity.KSelectImagesFragment.EXTRA_DEFAULT_SELECTED_LIST, resultList);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.image_grid, Fragment.instantiate(this, KSelectImagesFragment.class.getName(), bundle))
+                .add(R.id.image_grid, Fragment.instantiate(this, ImageZoomActivity.KSelectImagesFragment.class.getName(), bundle))
                 .commit();
 
         // 完成按钮
