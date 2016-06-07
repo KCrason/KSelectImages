@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">KSelectImages</string>
+    <string name="preview">预览</string>
+    <string name="all_image">所有图片</string>
+    <string name="image">图片</string>
+    <string name="finish">完成</string>
+    <string name="share_images">分享图片</string>
+    <string name="send">发送</string>
+    <string name="think">这一刻的想法...</string>
+    <string name="image_error">图片错误</string>
+    <string name="prompt">提示</string>
+    <string name="determine">确定</string>
+    <string name="exit_edit">退出编辑</string>
+    <string name="cancel">取消</string>
+    <string name="not_network">没有网络</string>
+    <string name="at_least_one_photo">至少选择一张图片</string>
+    <string name="loading">上传中...</string>
+    <string name="delele_image">删除图片？</string>
+    <string name="image_amount_limit">最多只能选择9张图片</string>
+    <string name="stretch">张</string>
+    <string name="no_image">暂无图片</string>
+</resources>

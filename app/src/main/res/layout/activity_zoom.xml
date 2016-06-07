@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#080808" >
+
+    <com.kcrason.kselectimages.widget.ViewPagerFixed
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:unselectedAlpha="1" >
+    </com.kcrason.kselectimages.widget.ViewPagerFixed>
+
+    <RelativeLayout
+        android:id="@+id/rl_title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary" >
+
+        <ImageView
+            android:id="@+id/back"
+            style="@style/title_bar_imageview_style"
+            android:onClick="onBack"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_image_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dip"
+            android:layout_toRightOf="@id/back"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imgv_delete"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:padding="8dp"
+            android:src="@drawable/image_delete" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rlayout_parent"
+                android:background="#080808">
+
+    <com.kcrason.kselectimages.widget.ViewPagerFixed
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:unselectedAlpha="1">
+    </com.kcrason.kselectimages.widget.ViewPagerFixed>
+
+    <RelativeLayout
+        android:id="@+id/rl_title_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="#bf080808">
+
+        <ImageView
+            android:id="@+id/back"
+            style="@style/title_bar_imageview_style"
+            android:onClick="onBack"
+            android:src="@drawable/back"/>
+
+        <TextView
+            android:id="@+id/tv_image_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/back"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/preview_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dip"
+            android:background="@drawable/selector_image_complete_shape"
+            android:gravity="center"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="#bf080808">
+
+        <ImageView
+            android:id="@+id/preview_checkmark"
+            android:layout_width="18dip"
+            android:layout_height="18dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dip"
+            android:src="@drawable/ic_media_item_sel"/>
+    </RelativeLayout>
+
+</RelativeLayout>

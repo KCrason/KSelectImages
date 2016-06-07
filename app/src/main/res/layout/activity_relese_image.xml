@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/back"
+            style="@style/title_bar_imageview_style"
+            android:background="@drawable/selector_title_bar_item_bg"
+            android:onClick="onBack"
+            android:src="@drawable/back"/>
+
+        <View
+            android:id="@+id/view"
+            style="@style/titel_bar_view_style"
+            android:layout_toRightOf="@+id/back"/>
+
+        <TextView
+            style="@style/title_bar_textview_style"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/view"
+            android:text="@string/share_images"/>
+
+        <TextView
+            android:id="@+id/txt_send"
+            style="@style/title_bar_textview_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="@string/send"/>
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/edt_content"
+        android:layout_width="fill_parent"
+        android:layout_height="140dp"
+        android:layout_margin="8dp"
+        android:background="@null"
+        android:gravity="left|top"
+        android:hint="@string/think"
+        android:textColor="@color/hot_text"
+        android:textSize="16sp">
+    </EditText>
+
+
+    <GridView
+        android:id="@+id/gv_images"
+        android:layout_width="292dip"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white"
+        android:horizontalSpacing="8dp"
+        android:numColumns="4"
+        android:scrollbars="none"
+        android:verticalSpacing="8dp">
+    </GridView>
+
+</LinearLayout>
