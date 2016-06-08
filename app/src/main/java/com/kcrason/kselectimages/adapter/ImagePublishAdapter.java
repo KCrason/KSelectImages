@@ -1,16 +1,14 @@
 package com.kcrason.kselectimages.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap.Config;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.utils.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -24,8 +22,11 @@ public class ImagePublishAdapter extends BaseAdapter {
 		this.mDataList = dataList;
 	}
 
+	/**
+	 * 多返回一个用于展示添加图标
+	 */
 	public int getCount() {
-		// 多返回一个用于展示添加图标
+
 		if (mDataList == null) {
 			return 1;
 		} else if (mDataList.size() == Constants.MAX_IMAGE_SIZE) {
@@ -58,7 +59,6 @@ public class ImagePublishAdapter extends BaseAdapter {
 		return position;
 	}
 
-	@SuppressLint("ViewHolder")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// 所有Item展示不满一页，就不进行ViewHolder重用了，避免了一个拍照以后添加图片按钮被覆盖的奇怪问题
 		convertView = View.inflate(mContext, R.layout.item_publish, null);
@@ -67,11 +67,16 @@ public class ImagePublishAdapter extends BaseAdapter {
 			imageIv.setImageResource(R.drawable.selector_btn_add_pic);
 		} else {
 			final String imagePath = mDataList.get(position);
-			Picasso.with(mContext).load(new File(imagePath)).placeholder(R.drawable.empty_picture).resize(100, 100)
-					.config(Config.RGB_565).centerCrop().into(imageIv);
-			
-		}
 
+			Glide.with(mContext).load(new File(imagePath))
+					.asBitmap()
+					.placeholder(R.drawable.empty_picture)
+					.override(100,100)
+					.centerCrop()
+					.into(imageIv);
+
+
+		}
 		return convertView;
 	}
 

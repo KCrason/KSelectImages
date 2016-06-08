@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.adapter.FolderAdapter;
 import com.kcrason.kselectimages.adapter.ImageGridAdapter;
@@ -36,9 +37,10 @@ import com.kcrason.kselectimages.interfaces.SelectImagesCallBack;
 import com.kcrason.kselectimages.model.Folder;
 import com.kcrason.kselectimages.model.Image;
 import com.kcrason.kselectimages.utils.FileUtils;
-import com.squareup.picasso.Picasso;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -178,13 +180,12 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
         mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int state) {
-
-                final Picasso picasso = Picasso.with(getActivity());
-                if (state == SCROLL_STATE_IDLE || state == SCROLL_STATE_TOUCH_SCROLL) {
-                    picasso.resumeTag(getActivity());
-                } else {
-                    picasso.pauseTag(getActivity());
-                }
+//                final Picasso picasso = Picasso.with(getActivity());
+//                if (state == SCROLL_STATE_IDLE || state == SCROLL_STATE_TOUCH_SCROLL) {
+//                    picasso.resumeTag(getActivity());
+//                } else {
+//                    picasso.pauseTag(getActivity());
+//                }
                 if (state == SCROLL_STATE_IDLE) {
                     // 停止滑动，日期指示器消失
                     mTimeLineText.setVisibility(View.GONE);

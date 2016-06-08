@@ -1,7 +1,6 @@
 package com.kcrason.kselectimages.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap.Config;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,10 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.interfaces.SelectImagesCallBack;
 import com.kcrason.kselectimages.model.Image;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -268,9 +267,9 @@ public class ImageGridAdapter extends BaseAdapter {
 
             if (mItemSize > 0) {
                 // 显示图片
-                Picasso.with(mContext).load(imageFile).placeholder(R.drawable.default_error)
-                        .error(R.drawable.default_error).config(Config.RGB_565)
-                        .resize(mItemSize, mItemSize)
+                Glide.with(mContext).load(imageFile).asBitmap().placeholder(R.drawable.default_error)
+                        .error(R.drawable.default_error)
+                        .override(mItemSize, mItemSize)
                         .centerCrop()
                         .into(image);
             }

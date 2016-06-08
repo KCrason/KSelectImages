@@ -22,7 +22,7 @@ public class FileUtils {
 				pic.mkdirs();
 			}
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
-			String fileName = "multi_image_" + timeStamp + "";
+			String fileName = "select_image_" + timeStamp + "";
 
 			File tmpFile = new File(pic, fileName + ".jpg");
 
@@ -33,7 +33,7 @@ public class FileUtils {
 				cacheDir.mkdirs();
 			}
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
-			String fileName = "multi_image_" + timeStamp + "";
+			String fileName = "select_image_" + timeStamp + "";
 			File tmpFile = new File(cacheDir, fileName + ".jpg");
 
 			return tmpFile;
