@@ -145,10 +145,6 @@ public class FolderAdapter extends BaseAdapter {
             name.setText(data.name);
             size.setText(data.images.size() + mContext.getString(R.string.stretch));
             // 显示图片
-//            Picasso.with(mContext).load(new File(data.cover.path))
-//                    .placeholder(R.drawable.default_error).config(Bitmap.Config.RGB_565)
-//                    .resize(mImageSize, mImageSize).centerCrop().into(cover);
-
             Glide.with(mContext).load(new File(data.cover.path))
                     .placeholder(R.drawable.default_error)
                     .override(mImageSize, mImageSize)

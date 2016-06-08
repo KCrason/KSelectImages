@@ -180,12 +180,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
         mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int state) {
-//                final Picasso picasso = Picasso.with(getActivity());
-//                if (state == SCROLL_STATE_IDLE || state == SCROLL_STATE_TOUCH_SCROLL) {
-//                    picasso.resumeTag(getActivity());
-//                } else {
-//                    picasso.pauseTag(getActivity());
-//                }
                 if (state == SCROLL_STATE_IDLE) {
                     // 停止滑动，日期指示器消失
                     mTimeLineText.setVisibility(View.GONE);
