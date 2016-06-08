@@ -15,17 +15,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RefreshImageSelect;
 import com.kcrason.kselectimages.model.Image;
 import com.kcrason.kselectimages.utils.ActivityManager;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
-import com.kcrason.kselectimages.utils.ImageDisplayer;
 import com.kcrason.kselectimages.utils.SnackBarUtils;
 import com.kcrason.kselectimages.widget.ViewPagerFixed;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -241,12 +242,22 @@ public class ImagePreviewActivity extends Activity {
             });
 
             if (isPreviewAll) {
-                if (mAllImagesList != null && !TextUtils.isEmpty(mAllImagesList.get(position).path)) {
-                    ImageDisplayer.getInstance().displayBmp(photoView, null, mAllImagesList.get(position).path);
+                String allImagePath = mAllImagesList.get(position).path;
+                if (mAllImagesList != null && !TextUtils.isEmpty(allImagePath)) {
+                    Glide.with(ImagePreviewActivity.this).load(new File(allImagePath))
+                            .asBitmap().placeholder(R.drawable.default_error)
+                            .error(R.drawable.default_error)
+                            .fitCenter().into(photoView);
                 }
             } else {
-                if (mDataList != null && !TextUtils.isEmpty(mDataList.get(position))) {
-                    ImageDisplayer.getInstance().displayBmp(photoView, null, mDataList.get(position));
+                String imagePath = mDataList.get(position);
+                if (mDataList != null && !TextUtils.isEmpty(imagePath)) {
+                    Glide.with(ImagePreviewActivity.this).load(new File(imagePath))
+                            .asBitmap()
+                            .placeholder(R.drawable.default_error)
+                            .error(R.drawable.default_error)
+                            .fitCenter()
+                            .into(photoView);
                 }
             }
             container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

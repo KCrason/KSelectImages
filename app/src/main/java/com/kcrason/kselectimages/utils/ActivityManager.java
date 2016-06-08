@@ -11,7 +11,7 @@ import java.util.List;
 public class ActivityManager {
 
     private static ActivityManager activityManage;
-    private List<Activity> activities = new ArrayList<Activity>();
+    private List<Activity> activities = new ArrayList<>();
 
     public static synchronized ActivityManager getInstance() {
         if (activityManage == null) {

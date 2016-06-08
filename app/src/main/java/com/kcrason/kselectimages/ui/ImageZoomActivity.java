@@ -15,15 +15,16 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RemoveImageEvent;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
-import com.kcrason.kselectimages.utils.ImageDisplayer;
 import com.kcrason.kselectimages.utils.ShowUtils;
 import com.kcrason.kselectimages.widget.ViewPagerFixed;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,8 +214,13 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
             image.setId(position);
             assert image != null;
             PhotoView imageView = (PhotoView) image.findViewById(R.id.image_preview);
+
             if (!TextUtils.isEmpty(mDataList.get(position))) {
-                ImageDisplayer.getInstance().displayBmp(imageView, null, mDataList.get(position));
+                Glide.with(ImageZoomActivity.this)
+                        .load(new File(mDataList.get(position)))
+                        .placeholder(R.drawable.default_error)
+                        .error(R.drawable.default_error)
+                        .fitCenter().into(imageView);
             }
             imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override

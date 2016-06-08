@@ -37,15 +37,13 @@
 
         <Button
             android:id="@+id/preview_commit"
-            android:layout_width="wrap_content"
+            android:layout_width="64dip"
             android:layout_height="48dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="8dip"
             android:background="@drawable/selector_image_complete_shape"
             android:gravity="center"
-            android:paddingLeft="8dip"
-            android:paddingRight="8dip"
             android:textColor="@android:color/white"
             android:textSize="12sp"/>
     </RelativeLayout>
