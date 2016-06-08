@@ -15,10 +15,11 @@
     <string name="not_network">没有网络</string>
     <string name="at_least_one_photo">至少选择一张图片</string>
     <string name="loading">上传中...</string>
-    <string name="delele_image">删除图片？</string>
+    <string name="delele_image">确定删除最后一张图片？</string>
     <string name="image_amount_limit">最多只能选择9张图片</string>
     <string name="stretch">张</string>
     <string name="no_image">暂无图片</string>
     <string name="delete_sucess">删除成功</string>
     <string name="upload_sucess">上传成功</string>
+    <string name="revoke">撤销</string>
 </resources>

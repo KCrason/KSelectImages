@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
@@ -13,16 +14,19 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RemoveImageEvent;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
 import com.kcrason.kselectimages.utils.ImageDisplayer;
 import com.kcrason.kselectimages.utils.ShowUtils;
-import com.kcrason.kselectimages.utils.SnackBarUtils;
 import com.kcrason.kselectimages.widget.ViewPagerFixed;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,7 +64,7 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
                 if (mDataList.size() == 1) {
                     ShowUtils.showDialog(this, getString(R.string.delele_image), this);
                 } else {
-                    removeImg(currentPosition);
+                    startRemoveImage(currentPosition);
                     adapter.notifyDataSetChanged();
                 }
                 break;
@@ -100,28 +104,65 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
         mDataList = intent.getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
         currentPosition = intent.getIntExtra(KSelectImagesActivity.EXTRA_CURRENT_IMG_POSITION, 0);
         mViewPagerFixed.addOnPageChangeListener(pageChangeListener);
-        adapter = new MyPageAdapter(mDataList);
+        adapter = new MyPageAdapter();
         mViewPagerFixed.setAdapter(adapter);
         mViewPagerFixed.setCurrentItem(currentPosition);
         resetImageNumber();
     }
 
-    private void removeImg(int location) {
-        startRemoveImage(location);
+    private void startRemoveImage(final int location) {
+        if (location + 1 <= mDataList.size()) {
+            //临时保存当前要删除的图片，如果用户撤销删除，则又恢复图片
+            final String tempImagePath = mDataList.get(location);
+            mDataList.remove(location);
+            notificationChange(location);
+            if (mDataList.size() > 0) {
+                Snackbar.make(ButterKnife.findById(this, R.id.rlayout_parent), getString(R.string.delete_sucess), Snackbar.LENGTH_LONG)
+                        .setAction(getText(R.string.revoke), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                notificationRevokeChange(location, tempImagePath);
+                            }
+                        }).show();
+            }
+        }
     }
 
-    private void startRemoveImage(int location) {
-        if (location + 1 <= mDataList.size()) {
-            mDataList.remove(location);
-            SnackBarUtils.showSnackBar(ButterKnife.findById(this, R.id.rlayout_parent), getString(R.string.delete_sucess));
-            EventBus.getDefault().post(new RemoveImageEvent(location));
-            // 判断是否是最后一张图片，如果是，则不进行图片数量的重置显示
-            if (location != 0) {
+    /**
+     * 删除图片操作
+     *
+     * @param location
+     */
+    private void notificationChange(int location) {
+        EventBus.getDefault().post(new RemoveImageEvent(location, false));
+        // 判断是否是最后一张图片，如果是，则不进行图片数量的重置显示
+        setTextNumber(location);
+    }
+
+    /***
+     * 图片撤销操作
+     *
+     * @param location
+     * @param path
+     */
+    private void notificationRevokeChange(int location, String path) {
+        mDataList.add(location, path);
+        EventBus.getDefault().post(new RemoveImageEvent(location, true, path));
+        // 判断是否是最后一张图片，如果是，则不进行图片数量的重置显示
+        setTextNumber(location);
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 重置图片标志位显示
+     * @param location
+     */
+    private void setTextNumber(int location) {
+        if (location != 0) {
+            resetImageNumber();
+        } else {
+            if (mDataList.size() != 0) {
                 resetImageNumber();
-            } else {
-                if (mDataList.size() != 0) {
-                    resetImageNumber();
-                }
             }
         }
     }
@@ -137,7 +178,6 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
     }
 
     private OnPageChangeListener pageChangeListener = new OnPageChangeListener() {
-
         public void onPageSelected(int arg0) {
             currentPosition = arg0;
             resetImageNumber();
@@ -164,12 +204,6 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
     }
 
     class MyPageAdapter extends PagerAdapter {
-        private List<String> dataList = new ArrayList<String>();
-
-        public MyPageAdapter(List<String> dataList) {
-            this.dataList = dataList;
-        }
-
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
@@ -179,8 +213,8 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
             image.setId(position);
             assert image != null;
             PhotoView imageView = (PhotoView) image.findViewById(R.id.image_preview);
-            if (!TextUtils.isEmpty(dataList.get(position))) {
-                ImageDisplayer.getInstance().displayBmp(imageView, null, dataList.get(position));
+            if (!TextUtils.isEmpty(mDataList.get(position))) {
+                ImageDisplayer.getInstance().displayBmp(imageView, null, mDataList.get(position));
             }
             imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
@@ -191,10 +225,8 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
                         titleBarVisiable();
                     }
                 }
-
                 @Override
                 public void onOutsidePhotoTap() {
-
                 }
             });
 
@@ -212,10 +244,10 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
 
         @Override
         public int getCount() {
-            if (dataList == null) {
+            if (mDataList == null) {
                 return 0;
             } else {
-                return dataList.size();
+                return mDataList.size();
             }
         }
     }

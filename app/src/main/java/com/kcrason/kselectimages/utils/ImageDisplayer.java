@@ -38,11 +38,11 @@ public class ImageDisplayer {
 
     public Handler h = new Handler();
     public final String TAG = getClass().getSimpleName();
-    private HashMap<String, SoftReference<Bitmap>> imageCache = new HashMap<String, SoftReference<Bitmap>>();
+    private HashMap<String, SoftReference<Bitmap>> imageCache = new HashMap<>();
 
     public void put(String key, Bitmap bmp) {
         if (!TextUtils.isEmpty(key) && bmp != null) {
-            imageCache.put(key, new SoftReference<Bitmap>(bmp));
+            imageCache.put(key, new SoftReference<>(bmp));
         }
     }
 
@@ -120,7 +120,7 @@ public class ImageDisplayer {
                 imageView.setTag(path);
             }
         } else {
-            ((ImageView) imageView).setImageResource(R.drawable.default_error);
+            imageView.setImageResource(R.drawable.default_error);
         }
     }
 
@@ -156,9 +156,5 @@ public class ImageDisplayer {
             }
         }
         return bitmap;
-    }
-
-    public interface ImageCallback {
-        public void imageLoad(ImageView imageView, Bitmap bitmap, Object... params);
     }
 }

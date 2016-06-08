@@ -27,7 +27,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.adapter.FolderAdapter;
 import com.kcrason.kselectimages.adapter.ImageGridAdapter;
@@ -38,10 +37,8 @@ import com.kcrason.kselectimages.model.Folder;
 import com.kcrason.kselectimages.model.Image;
 import com.kcrason.kselectimages.utils.FileUtils;
 import com.squareup.picasso.Picasso;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,7 +67,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
      * 默认选择的数据集
      */
     public static final String EXTRA_DEFAULT_SELECTED_LIST = "default_result";
-
     /**
      * 多选
      */
@@ -478,8 +474,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             if (data != null) {
-                List<Image> images = new ArrayList<Image>();
-                mAllImageList = new ArrayList<Image>();
+                mAllImageList = new ArrayList<>();
                 int count = data.getCount();
                 if (count > 0) {
                     data.moveToFirst();
@@ -488,10 +483,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                         String name = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]));
                         long dateTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]));
                         Image image = new Image(path, name, dateTime);
-                        images.add(image);
-
                         mAllImageList.add(image);
-
                         if (!hasFolderGened) {
                             // 获取文件夹名称
                             File imageFile = new File(path);
@@ -501,7 +493,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                             folder.path = folderFile.getAbsolutePath();
                             folder.cover = image;
                             if (!mResultFolder.contains(folder)) {
-                                List<Image> imageList = new ArrayList<Image>();
+                                List<Image> imageList = new ArrayList<>();
                                 imageList.add(image);
 
                                 folder.images = imageList;
@@ -515,7 +507,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
 
                     } while (data.moveToNext());
 
-                    mImageAdapter.setData(images);
+                    mImageAdapter.setData(mAllImageList);
 
                     // 设定默认选择
                     if (resultList != null && resultList.size() > 0) {

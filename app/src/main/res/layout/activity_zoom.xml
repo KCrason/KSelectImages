@@ -1,8 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/rlayout_parent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#080808">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlayout_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#080808">
 
     <com.kcrason.kselectimages.widget.ViewPagerFixed
         android:id="@+id/viewpager"
@@ -38,8 +39,8 @@
             android:id="@+id/imgv_delete"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/selector_title_bar_item_bg"
             android:layout_alignParentRight="true"
+            android:background="@drawable/selector_title_bar_item_bg"
             android:padding="8dp"
             android:src="@drawable/image_delete"/>
     </RelativeLayout>

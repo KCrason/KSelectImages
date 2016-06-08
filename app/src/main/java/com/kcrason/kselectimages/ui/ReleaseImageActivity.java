@@ -245,7 +245,16 @@ public class ReleaseImageActivity extends Activity
 
     @Subscribe
     public void onEventMainThread(RemoveImageEvent event) {
-        mSelectPath.remove(event.getIndex());
+        boolean isRevoke = event.getIsRevoke();
+        int index = event.getIndex();
+        if (isRevoke) {
+            String path = event.getPath();
+            if (!TextUtils.isEmpty(path)) {
+                mSelectPath.add(index, event.getPath());
+            }
+        } else {
+            mSelectPath.remove(index);
+        }
         mAdapter.notifyDataSetChanged();
     }
 
