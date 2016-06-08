@@ -27,20 +27,18 @@
         android:layout_toRightOf="@id/back"
         android:text="@string/image"
         android:textColor="@android:color/white"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/title_txt_size"/>
 
     <Button
         android:id="@+id/commit"
-        android:layout_width="wrap_content"
+        android:layout_width="64dip"
         android:layout_height="48dip"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dip"
         android:background="@drawable/selector_image_complete_shape"
-        android:paddingLeft="8dip"
-        android:paddingRight="8dip"
         android:text="@string/finish"
         android:textColor="@android:color/white"
-        android:textSize="12sp"/>
+        android:textSize="@dimen/btn_complete"/>
 
 </RelativeLayout>

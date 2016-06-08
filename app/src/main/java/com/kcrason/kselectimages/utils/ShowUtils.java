@@ -29,6 +29,7 @@ public class ShowUtils {
     public static ProgressDialog showProgressDialog(Activity activity, String msg) {
         ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage(msg);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
         return progressDialog;
     }

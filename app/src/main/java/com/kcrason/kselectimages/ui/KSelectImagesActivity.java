@@ -74,13 +74,13 @@ public class KSelectImagesActivity extends FragmentActivity implements Callback 
         }
 
         Bundle bundle = new Bundle();
-        bundle.putInt(ImageZoomActivity.KSelectImagesFragment.EXTRA_SELECT_COUNT, mDefaultCount);
-        bundle.putInt(ImageZoomActivity.KSelectImagesFragment.EXTRA_SELECT_MODE, mode);
-        bundle.putBoolean(ImageZoomActivity.KSelectImagesFragment.EXTRA_SHOW_CAMERA, isShow);
-        bundle.putStringArrayList(ImageZoomActivity.KSelectImagesFragment.EXTRA_DEFAULT_SELECTED_LIST, resultList);
+        bundle.putInt(KSelectImagesFragment.EXTRA_SELECT_COUNT, mDefaultCount);
+        bundle.putInt(KSelectImagesFragment.EXTRA_SELECT_MODE, mode);
+        bundle.putBoolean(KSelectImagesFragment.EXTRA_SHOW_CAMERA, isShow);
+        bundle.putStringArrayList(KSelectImagesFragment.EXTRA_DEFAULT_SELECTED_LIST, resultList);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.image_grid, Fragment.instantiate(this, ImageZoomActivity.KSelectImagesFragment.class.getName(), bundle))
+                .add(R.id.image_grid, Fragment.instantiate(this, KSelectImagesFragment.class.getName(), bundle))
                 .commit();
 
         // 完成按钮

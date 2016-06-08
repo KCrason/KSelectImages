@@ -43,7 +43,9 @@ import butterknife.OnClick;
 public class ReleaseImageActivity extends Activity
         implements AdapterView.OnItemClickListener, DialogInterface.OnClickListener {
 
-    private final int REQUEST_IMAGE = 3;
+    private static final int MSG_PB = 0x01;
+
+    private final static int REQUEST_IMAGE = 3;
 
     private ImagePublishAdapter mAdapter;
 
@@ -51,8 +53,7 @@ public class ReleaseImageActivity extends Activity
 
     private ArrayList<String> mSelectPath = new ArrayList<>();
 
-    private static final int MSG_PB = 0x01;
-
+    private MessageHandler mMessageHandler;
 
     @BindView(R.id.rootView)
     LinearLayout mRootView;
@@ -122,14 +123,12 @@ public class ReleaseImageActivity extends Activity
     }
 
 
-    private MessageHandler mMessageHandler;
-
     public void initViews() {
         ButterKnife.bind(this);
         ActivityManager.getInstance().addActivity(this);
         mMessageHandler = new MessageHandler(this);
 
-        if (getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT) != null){
+        if (getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT) != null) {
             mSelectPath = getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
         }
 
@@ -177,7 +176,7 @@ public class ReleaseImageActivity extends Activity
                             e.printStackTrace();
                         }
                     }
-                });
+                }).start();
             } else {
                 SnackBarUtils.showSnackBar(mRootView, getString(R.string.not_network));
             }
@@ -197,13 +196,14 @@ public class ReleaseImageActivity extends Activity
 
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             ReleaseImageActivity releaseImageActivity = (ReleaseImageActivity) this.mWeakReference.get();
             switch (msg.what) {
                 case MSG_PB:
+                    SnackBarUtils.showSnackBar(releaseImageActivity.mRootView, releaseImageActivity.getString(R.string.upload_sucess));
                     releaseImageActivity.progressDialog.dismiss();
                     break;
             }
+            super.handleMessage(msg);
         }
     }
 

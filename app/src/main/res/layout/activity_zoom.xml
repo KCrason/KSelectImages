@@ -38,6 +38,7 @@
             android:id="@+id/imgv_delete"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="@drawable/selector_title_bar_item_bg"
             android:layout_alignParentRight="true"
             android:padding="8dp"
             android:src="@drawable/image_delete"/>

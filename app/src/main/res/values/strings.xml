@@ -20,4 +20,5 @@
     <string name="stretch">张</string>
     <string name="no_image">暂无图片</string>
     <string name="delete_sucess">删除成功</string>
+    <string name="upload_sucess">上传成功</string>
 </resources>

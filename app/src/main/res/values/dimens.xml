@@ -5,4 +5,6 @@
     <dimen name="space_size">2dip</dimen>
     <dimen name="folder_cover_size">72dip</dimen>
     <dimen name="image_size">120dip</dimen>
+    <dimen name="title_txt_size">18sp</dimen>
+    <dimen name="btn_complete">12sp</dimen>
 </resources>
