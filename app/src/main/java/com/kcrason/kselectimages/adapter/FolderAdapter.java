@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.model.Folder;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,8 +86,8 @@ public class FolderAdapter extends BaseAdapter {
                 holder.size.setText(getTotalImageSize() + mContext.getString(R.string.stretch));
                 if (mFolders.size() > 0) {
                     Folder f = mFolders.get(0);
-                    Picasso.with(mContext).load(new File(f.cover.path)).error(R.drawable.default_error)
-                            .resize(mImageSize, mImageSize).centerCrop().into(holder.cover);
+                    Glide.with(mContext).load(new File(f.cover.path)).error(R.drawable.default_error)
+                            .override(mImageSize,mImageSize).centerCrop().into(holder.cover);
                 }
             } else {
                 holder.bindData(getItem(i));

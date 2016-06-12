@@ -225,19 +225,14 @@ public class ImagePreviewActivity extends Activity {
         public Object instantiateItem(ViewGroup container, int position) {
             PhotoView photoView = new PhotoView(container.getContext());
             // photoView的单击事件
-            photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            photoView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                 @Override
-                public void onPhotoTap(View view, float v, float v1) {
+                public void onViewTap(View view, float v, float v1) {
                     if (mTitleBar.getVisibility() == View.VISIBLE) {
                         titleBarGone();
                     } else {
                         titleBarVisiable();
                     }
-                }
-
-                @Override
-                public void onOutsidePhotoTap() {
-
                 }
             });
 

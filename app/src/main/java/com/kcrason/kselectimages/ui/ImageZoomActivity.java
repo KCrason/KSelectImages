@@ -157,6 +157,7 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
 
     /**
      * 重置图片标志位显示
+     *
      * @param location
      */
     private void setTextNumber(int location) {
@@ -223,20 +224,17 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
                         .error(R.drawable.default_error)
                         .fitCenter().into(imageView);
             }
-            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+
+            imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                 @Override
-                public void onPhotoTap(View view, float v, float v1) {
+                public void onViewTap(View view, float v, float v1) {
                     if (mTitleBar.getVisibility() == View.VISIBLE) {
                         titleBarGone();
                     } else {
                         titleBarVisiable();
                     }
                 }
-                @Override
-                public void onOutsidePhotoTap() {
-                }
             });
-
             arg0.addView(image, 0);
             return image;
         }

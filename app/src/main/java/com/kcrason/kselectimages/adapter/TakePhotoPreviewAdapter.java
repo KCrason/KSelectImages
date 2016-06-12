@@ -74,21 +74,16 @@ public class TakePhotoPreviewAdapter extends PagerAdapter {
                     .placeholder(R.drawable.default_error)
                     .error(R.drawable.default_error).fitCenter().into(imageView);
         }
-        imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+        imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
             @Override
-            public void onPhotoTap(View view, float v, float v1) {
+            public void onViewTap(View view, float v, float v1) {
                 if (rl_title_bar.getVisibility() == View.VISIBLE) {
                     titleBarGone();
                 } else {
                     titleBarVisiable();
                 }
             }
-
-            @Override
-            public void onOutsidePhotoTap() {
-            }
         });
-
         arg0.addView(image, 0);
         return image;
     }
