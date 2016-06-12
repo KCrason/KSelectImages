@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RemoveImageEvent;
+import com.kcrason.kselectimages.utils.Constants;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
 import com.kcrason.kselectimages.utils.ShowUtils;
 import com.kcrason.kselectimages.widget.ViewPagerFixed;
@@ -102,8 +103,8 @@ public class ImageZoomActivity extends Activity implements DialogInterface.OnCli
     private void initData() {
         mBarHeight = DisPlayUtils.dip2px(48);
         Intent intent = getIntent();
-        mDataList = intent.getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
-        currentPosition = intent.getIntExtra(KSelectImagesActivity.EXTRA_CURRENT_IMG_POSITION, 0);
+        mDataList = intent.getStringArrayListExtra(Constants.EXTRA_RESULT);
+        currentPosition = intent.getIntExtra(Constants.EXTRA_CURRENT_IMG_POSITION, 0);
         mViewPagerFixed.addOnPageChangeListener(pageChangeListener);
         adapter = new MyPageAdapter();
         mViewPagerFixed.setAdapter(adapter);

@@ -18,6 +18,9 @@ public class FileUtils {
 		if (state.equals(Environment.MEDIA_MOUNTED)) {
 			// 已挂载
 			File pic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+			/**
+			 * 注意此处必须进行文件夹的判断，不进行判断在某些国产手机上会出现bug
+			 */
 			if (!pic.exists()) {
 				pic.mkdirs();
 			}

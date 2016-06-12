@@ -1,8 +1,10 @@
 package com.kcrason.kselectimages.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -32,5 +34,13 @@ public class KUtils {
             return networkInfo.isAvailable();
         }
         return false;
+    }
+
+    public static void actionStart(Context context, Class zClass, Bundle bundle) {
+        Intent intent = new Intent(context, zClass);
+        if (bundle != null) {
+            intent.putExtra(Constants.KEY, bundle);
+        }
+        context.startActivity(intent);
     }
 }

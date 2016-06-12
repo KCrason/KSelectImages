@@ -36,7 +36,9 @@ import com.kcrason.kselectimages.interfaces.Callback;
 import com.kcrason.kselectimages.interfaces.SelectImagesCallBack;
 import com.kcrason.kselectimages.model.Folder;
 import com.kcrason.kselectimages.model.Image;
+import com.kcrason.kselectimages.utils.Constants;
 import com.kcrason.kselectimages.utils.FileUtils;
+import com.kcrason.kselectimages.utils.KUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,28 +53,9 @@ import java.util.Locale;
 /**
  * Created by KCrason on 2016/6/7.
  */
-public  class KSelectImagesFragment extends Fragment implements View.OnClickListener ,SelectImagesCallBack {
+public class KSelectImagesFragment extends Fragment implements View.OnClickListener, SelectImagesCallBack {
 
-    /**
-     * 最大图片选择次数，int类型
-     */
-    public static final String EXTRA_SELECT_COUNT = "max_select_count";
-    /**
-     * 图片选择模式，int类型
-     */
-    public static final String EXTRA_SELECT_MODE = "select_count_mode";
-    /**
-     * 是否显示相机，boolean类型
-     */
-    public static final String EXTRA_SHOW_CAMERA = "show_camera";
-    /**
-     * 默认选择的数据集
-     */
-    public static final String EXTRA_DEFAULT_SELECTED_LIST = "default_result";
-    /**
-     * 多选
-     */
-    public static final int MODE_MULTI = 1;
+
     // 不同loader定义
     private static final int LOADER_ALL = 0;
     private static final int LOADER_CATEGORY = 1;
@@ -136,22 +119,22 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // 选择图片数量
-        mDesireImageCount = getArguments().getInt(EXTRA_SELECT_COUNT);
+        mDesireImageCount = getArguments().getInt(Constants.EXTRA_SELECT_COUNT);
         // 图片选择模式
-        mode = getArguments().getInt(EXTRA_SELECT_MODE);
+        mode = getArguments().getInt(Constants.EXTRA_SELECT_MODE);
         // 默认选择
-        if (mode == MODE_MULTI) {
-            ArrayList<String> tmp = getArguments().getStringArrayList(EXTRA_DEFAULT_SELECTED_LIST);
+        if (mode == Constants.MODE_MULTI) {
+            ArrayList<String> tmp = getArguments().getStringArrayList(Constants.EXTRA_DEFAULT_SELECTED_LIST);
             if (tmp != null && tmp.size() > 0) {
                 resultList = tmp;
             }
         }
 
         // 是否显示照相机
-        mIsShowCamera = getArguments().getBoolean(EXTRA_SHOW_CAMERA, true);
+        mIsShowCamera = getArguments().getBoolean(Constants.EXTRA_SHOW_CAMERA, true);
         mImageAdapter = new ImageGridAdapter(getContext(), mIsShowCamera, this);
         // 是否显示选择指示器
-        mImageAdapter.showSelectIndicator(mode == MODE_MULTI);
+        mImageAdapter.showSelectIndicator(mode == Constants.MODE_MULTI);
 
         mPopupAnchorView = view.findViewById(R.id.footer);
 
@@ -228,13 +211,13 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), ImagePreviewActivity.class);
-                intent.putExtra(KSelectImagesActivity.EXTRA_RESULT, resultList);
-                intent.putExtra("allImages", mAllImageList);
-                intent.putExtra("isShowCamera", mImageAdapter.getShowCamera());
-                intent.putExtra("position", i);
-                intent.putExtra("isPreviewAll", true);
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(Constants.EXTRA_RESULT, resultList);
+                bundle.putSerializable(Constants.EXTRA_ALL_IMAGES, mAllImageList);
+                bundle.putBoolean(Constants.EXTRA_SHOW_CAMERA, mImageAdapter.getShowCamera());
+                bundle.putInt(Constants.EXTRA_CUR_POSITION, i);
+                bundle.putBoolean(Constants.EXTRA_PRE_ALL, true);
+                KUtils.actionStart(getActivity(), ImagePreviewActivity.class, bundle);
                 getActivity().overridePendingTransition(R.anim.selecter_image_alpha_enter,
                         R.anim.selecter_image_alpha_exit);
             }
@@ -263,7 +246,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
 
     /**
      * 创建弹出的ListView
-     *
      */
     private void createPopupFolderList(int width, int height) {
         mFolderPopupWindow = new PopupWindow(getActivity());
@@ -277,7 +259,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
         folderList.setAdapter(mFolderAdapter);
 
         folderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @SuppressWarnings("rawtypes")
             @Override
             public void onItemClick(AdapterView<?> adapterView, View arg1, int i, long l) {
                 mFolderAdapter.setSelectIndex(i);
@@ -298,11 +279,9 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                     Folder folder = (Folder) v.getAdapter().getItem(index);
                     if (null != folder) {
                         mImageAdapter.setData(folder.images);
-
                         // 当切换图片文件夹时，需要更新相应的所有图片预览数据源
                         mAllImageList.clear();
                         mAllImageList.addAll(folder.images);
-
                         mCategoryText.setText(folder.name);
                         // 设定默认选择
                         if (resultList != null && resultList.size() > 0) {
@@ -321,7 +300,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // 首次加载所有图片
-        // new LoadImageTask().execute();
         getActivity().getSupportLoaderManager().initLoader(LOADER_ALL, null, mLoaderCallback);
     }
 
@@ -395,7 +373,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
             startActivityForResult(cameraIntent, REQUEST_CAMERA);
         } else {
-            Toast.makeText(getContext(),getString(R.string.no_image),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.no_image), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -412,7 +390,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
     private void selectImageFromGrid(Image image, int mode) {
         if (image != null) {
             // 多选模式
-            if (mode == MODE_MULTI) {
+            if (mode == Constants.MODE_MULTI) {
                 if (resultList.contains(image.path)) {
                     resultList.remove(image.path);
                     if (resultList.size() != 0) {
@@ -428,7 +406,7 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                 } else {
                     // 判断选择数量问题
                     if (mDesireImageCount == resultList.size()) {
-                        Toast.makeText(getContext(),getString(R.string.image_amount_limit),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.image_amount_limit), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     resultList.add(image.path);
@@ -490,7 +468,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                             if (!mResultFolder.contains(folder)) {
                                 List<Image> imageList = new ArrayList<>();
                                 imageList.add(image);
-
                                 folder.images = imageList;
                                 mResultFolder.add(folder);
                             } else {
@@ -499,7 +476,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                                 f.images.add(image);
                             }
                         }
-
                     } while (data.moveToNext());
 
                     mImageAdapter.setData(mAllImageList);
@@ -530,7 +506,6 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
             if (i == 0) {
                 // 如果图片大于等于9张，则不能再进行拍照操作
                 if (resultList.size() < 9) {
-
                     showCameraAction();
                 } else {
                     Toast.makeText(getContext(), getString(R.string.image_amount_limit), Toast.LENGTH_SHORT).show();
@@ -564,13 +539,12 @@ public  class KSelectImagesFragment extends Fragment implements View.OnClickList
                 }
                 break;
             case R.id.preview:
-                Intent intent = new Intent(getActivity(), ImagePreviewActivity.class);
-                intent.putExtra(KSelectImagesActivity.EXTRA_RESULT, resultList);
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(Constants.EXTRA_RESULT, resultList);
+                KUtils.actionStart(getActivity(), ImagePreviewActivity.class, bundle);
                 getActivity().overridePendingTransition(R.anim.selecter_image_alpha_enter,
                         R.anim.selecter_image_alpha_exit);
                 break;
-
             default:
                 break;
         }

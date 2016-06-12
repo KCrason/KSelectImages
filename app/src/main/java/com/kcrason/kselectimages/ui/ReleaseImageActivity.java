@@ -22,6 +22,7 @@ import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.adapter.ImagePublishAdapter;
 import com.kcrason.kselectimages.event.RemoveImageEvent;
 import com.kcrason.kselectimages.utils.ActivityManager;
+import com.kcrason.kselectimages.utils.Constants;
 import com.kcrason.kselectimages.utils.KUtils;
 import com.kcrason.kselectimages.utils.ShowUtils;
 import com.kcrason.kselectimages.utils.SnackBarUtils;
@@ -110,13 +111,13 @@ public class ReleaseImageActivity extends Activity
     private void selectAblum() {
         Intent intent = new Intent(ReleaseImageActivity.this, KSelectImagesActivity.class);
         // 是否显示拍摄图片
-        intent.putExtra(KSelectImagesActivity.EXTRA_SHOW_CAMERA, true);
+        intent.putExtra(Constants.EXTRA_SHOW_CAMERA, true);
         // 最大可选择图片数量
-        intent.putExtra(KSelectImagesActivity.EXTRA_SELECT_COUNT, 9);
+        intent.putExtra(Constants.EXTRA_SELECT_COUNT, 9);
         // 选择模式
-        intent.putExtra(KSelectImagesActivity.EXTRA_SELECT_MODE, KSelectImagesActivity.MODE_MULTI);
+        intent.putExtra(Constants.EXTRA_SELECT_MODE, KSelectImagesActivity.MODE_MULTI);
         // 默认选择
-        intent.putExtra(KSelectImagesActivity.EXTRA_DEFAULT_SELECTED_LIST, mSelectPath);
+        intent.putExtra(Constants.EXTRA_DEFAULT_SELECTED_LIST, mSelectPath);
 
         startActivityForResult(intent, REQUEST_IMAGE);
         overridePendingTransition(R.anim.selecter_image_alpha_enter, R.anim.selecter_image_alpha_exit);
@@ -128,8 +129,9 @@ public class ReleaseImageActivity extends Activity
         ActivityManager.getInstance().addActivity(this);
         mMessageHandler = new MessageHandler(this);
 
-        if (getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT) != null) {
-            mSelectPath = getIntent().getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
+        Bundle bundle = getIntent().getBundleExtra(Constants.KEY);
+        if (bundle != null) {
+            mSelectPath = bundle.getStringArrayList(Constants.EXTRA_RESULT);
         }
 
         mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -164,7 +166,7 @@ public class ReleaseImageActivity extends Activity
                         return;
                     }
                 }
-                createDialog();
+                progressDialog = ShowUtils.showProgressDialog(this, getString(R.string.loading));
 
                 new Thread(new Runnable() {
                     @Override
@@ -208,12 +210,7 @@ public class ReleaseImageActivity extends Activity
     }
 
 
-    private void createDialog() {
-        progressDialog = ShowUtils.showProgressDialog(this, getString(R.string.loading));
-    }
 
-
-    @SuppressWarnings("rawtypes")
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == getDataSize()) {
@@ -221,8 +218,8 @@ public class ReleaseImageActivity extends Activity
             selectAblum();
         } else {
             Intent intent = new Intent(ReleaseImageActivity.this, ImageZoomActivity.class);
-            intent.putExtra(KSelectImagesActivity.EXTRA_RESULT, (Serializable) mSelectPath);
-            intent.putExtra(KSelectImagesActivity.EXTRA_CURRENT_IMG_POSITION, position);
+            intent.putExtra(Constants.EXTRA_RESULT, (Serializable) mSelectPath);
+            intent.putExtra(Constants.EXTRA_CURRENT_IMG_POSITION, position);
             startActivity(intent);
             overridePendingTransition(R.anim.selecter_image_alpha_enter, R.anim.selecter_image_alpha_exit);
         }
@@ -244,7 +241,7 @@ public class ReleaseImageActivity extends Activity
     }
 
     @Subscribe
-    public void onEventMainThread(RemoveImageEvent event) {
+    public void onImageChangeListener(RemoveImageEvent event) {
         boolean isRevoke = event.getIsRevoke();
         int index = event.getIndex();
         if (isRevoke) {

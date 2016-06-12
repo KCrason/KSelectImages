@@ -1,7 +1,6 @@
 package com.kcrason.kselectimages.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -20,7 +19,9 @@ import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.RefreshImageSelect;
 import com.kcrason.kselectimages.model.Image;
 import com.kcrason.kselectimages.utils.ActivityManager;
+import com.kcrason.kselectimages.utils.Constants;
 import com.kcrason.kselectimages.utils.DisPlayUtils;
+import com.kcrason.kselectimages.utils.KUtils;
 import com.kcrason.kselectimages.utils.SnackBarUtils;
 import com.kcrason.kselectimages.widget.ViewPagerFixed;
 
@@ -130,20 +131,19 @@ public class ImagePreviewActivity extends Activity {
 
     private void initData() {
         barHeight = DisPlayUtils.dip2px(48);
-        Intent intent = getIntent();
-        mDataList = intent.getStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT);
-        isPreviewAll = intent.getBooleanExtra("isPreviewAll", false);
-
-
-        if (isPreviewAll) {
-            currentPosition = intent.getIntExtra("position", -1);
-            mAllImagesList = (ArrayList<Image>) intent.getSerializableExtra("allImages");
-            mIsShowCamera = intent.getBooleanExtra("isShowCamera", false);
-            if (mIsShowCamera && currentPosition == 1) {
-                currentPosition = 0;
+        Bundle bundle = getIntent().getBundleExtra(Constants.KEY);
+        if (bundle != null) {
+            mDataList = bundle.getStringArrayList(Constants.EXTRA_RESULT);
+            isPreviewAll = bundle.getBoolean(Constants.EXTRA_PRE_ALL, false);
+            if (isPreviewAll) {
+                currentPosition = bundle.getInt(Constants.EXTRA_CUR_POSITION, -1);
+                mAllImagesList = (ArrayList<Image>) bundle.getSerializable(Constants.EXTRA_ALL_IMAGES);
+                mIsShowCamera = bundle.getBoolean(Constants.EXTRA_SHOW_CAMERA, false);
+                if (mIsShowCamera && currentPosition == 1) {
+                    currentPosition = 0;
+                }
             }
         }
-
         if (mDataList != null) {
             for (int i = 0; i < mDataList.size(); i++) {
                 tempImagePath.put(mDataList.get(i), mDataList.get(i));
@@ -289,7 +289,7 @@ public class ImagePreviewActivity extends Activity {
     }
 
     private ArrayList<String> getResultList() {
-        ArrayList<String> resultList = new ArrayList<String>();
+        ArrayList<String> resultList = new ArrayList<>();
         if (tempImagePath.size() != 0) {
             resultList.addAll(tempImagePath.values());
         } else {
@@ -352,9 +352,9 @@ public class ImagePreviewActivity extends Activity {
                 checkMarkImage();
                 break;
             case R.id.preview_commit:
-                Intent data = new Intent(ImagePreviewActivity.this, ReleaseImageActivity.class);
-                data.putStringArrayListExtra(KSelectImagesActivity.EXTRA_RESULT, getResultList());
-                startActivity(data);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(Constants.EXTRA_RESULT, getResultList());
+                KUtils.actionStart(this, ReleaseImageActivity.class, bundle);
                 ActivityManager.getInstance().finishActivitys();
                 overridePendingTransition(R.anim.selecter_image_alpha_enter, R.anim.selecter_image_alpha_exit);
                 break;

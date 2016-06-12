@@ -11,6 +11,8 @@ import com.kcrason.kselectimages.R;
 import com.kcrason.kselectimages.event.TakePhotoEvent;
 import com.kcrason.kselectimages.interfaces.Callback;
 import com.kcrason.kselectimages.utils.ActivityManager;
+import com.kcrason.kselectimages.utils.Constants;
+import com.kcrason.kselectimages.utils.KUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,30 +24,7 @@ import java.util.ArrayList;
  * Created by KCrason on 2016/6/7.
  */
 public class KSelectImagesActivity extends FragmentActivity implements Callback {
-    /**
-     * 最大图片选择次数，int类型，默认9
-     */
-    public static final String EXTRA_SELECT_COUNT = "max_select_count";
-    /**
-     * 图片选择模式，默认多选
-     */
-    public static final String EXTRA_SELECT_MODE = "select_count_mode";
-    /**
-     * 是否显示相机，默认显示
-     */
-    public static final String EXTRA_SHOW_CAMERA = "show_camera";
-    /**
-     * 选择结果，返回为 ArrayList&lt;String&gt; 图片路径集合
-     */
-    public static final String EXTRA_RESULT = "select_result";
-    /**
-     * 默认选择集
-     */
-    public static final String EXTRA_DEFAULT_SELECTED_LIST = "default_list";
-    /**
-     * 当前预览的position
-     */
-    public static final String EXTRA_CURRENT_IMG_POSITION = "current_image_position";
+
     /**
      * 多选
      */
@@ -63,21 +42,21 @@ public class KSelectImagesActivity extends FragmentActivity implements Callback 
         EventBus.getDefault().register(this);
         ActivityManager.getInstance().addActivity(this);
         Intent intent = getIntent();
-        mDefaultCount = intent.getIntExtra(EXTRA_SELECT_COUNT, 9);
-        int mode = intent.getIntExtra(EXTRA_SELECT_MODE, MODE_MULTI);
-        boolean isShow = intent.getBooleanExtra(EXTRA_SHOW_CAMERA, true);
+        mDefaultCount = intent.getIntExtra(Constants.EXTRA_SELECT_COUNT, 9);
+        int mode = intent.getIntExtra(Constants.EXTRA_SELECT_MODE, MODE_MULTI);
+        boolean isShow = intent.getBooleanExtra(Constants.EXTRA_SHOW_CAMERA, true);
 
-        if (mode == MODE_MULTI && intent.hasExtra(EXTRA_DEFAULT_SELECTED_LIST)) {
-            if (intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST) != null) {
-                resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
+        if (mode == MODE_MULTI && intent.hasExtra(Constants.EXTRA_DEFAULT_SELECTED_LIST)) {
+            if (intent.getStringArrayListExtra(Constants.EXTRA_DEFAULT_SELECTED_LIST) != null) {
+                resultList = intent.getStringArrayListExtra(Constants.EXTRA_DEFAULT_SELECTED_LIST);
             }
         }
 
         Bundle bundle = new Bundle();
-        bundle.putInt(KSelectImagesFragment.EXTRA_SELECT_COUNT, mDefaultCount);
-        bundle.putInt(KSelectImagesFragment.EXTRA_SELECT_MODE, mode);
-        bundle.putBoolean(KSelectImagesFragment.EXTRA_SHOW_CAMERA, isShow);
-        bundle.putStringArrayList(KSelectImagesFragment.EXTRA_DEFAULT_SELECTED_LIST, resultList);
+        bundle.putInt(Constants.EXTRA_SELECT_COUNT, mDefaultCount);
+        bundle.putInt(Constants.EXTRA_SELECT_MODE, mode);
+        bundle.putBoolean(Constants.EXTRA_SHOW_CAMERA, isShow);
+        bundle.putStringArrayList(Constants.EXTRA_DEFAULT_SELECTED_LIST, resultList);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.image_grid, Fragment.instantiate(this, KSelectImagesFragment.class.getName(), bundle))
@@ -97,9 +76,9 @@ public class KSelectImagesActivity extends FragmentActivity implements Callback 
             public void onClick(View view) {
                 if (resultList != null && resultList.size() > 0) {
                     // 返回已选择的图片数据
-                    Intent data = new Intent(KSelectImagesActivity.this, ReleaseImageActivity.class);
-                    data.putStringArrayListExtra(EXTRA_RESULT, resultList);
-                    startActivity(data);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList(Constants.EXTRA_RESULT, resultList);
+                    KUtils.actionStart(KSelectImagesActivity.this, ReleaseImageActivity.class, bundle);
                     overridePendingTransition(R.anim.selecter_image_alpha_enter, R.anim.selecter_image_alpha_exit);
                     ActivityManager.getInstance().finishActivitys();
                 }
@@ -112,7 +91,7 @@ public class KSelectImagesActivity extends FragmentActivity implements Callback 
     public void onSingleImageSelected(String path) {
         Intent data = new Intent();
         resultList.add(path);
-        data.putStringArrayListExtra(EXTRA_RESULT, resultList);
+        data.putStringArrayListExtra(Constants.EXTRA_RESULT, resultList);
         setResult(RESULT_OK, data);
         finish();
     }
@@ -184,7 +163,7 @@ public class KSelectImagesActivity extends FragmentActivity implements Callback 
         if (imageFile != null) {
             Intent data = new Intent(KSelectImagesActivity.this, TakePhotoPreview.class);
             resultList.add(imageFile.getAbsolutePath());
-            data.putStringArrayListExtra(EXTRA_RESULT, resultList);
+            data.putStringArrayListExtra(Constants.EXTRA_RESULT, resultList);
             startActivity(data);
             overridePendingTransition(R.anim.selecter_image_alpha_enter, R.anim.selecter_image_alpha_exit);
         }
