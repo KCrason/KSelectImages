@@ -48,21 +48,5 @@
             android:textSize="12sp"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_bottom_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="#bf080808">
-
-        <ImageView
-            android:id="@+id/preview_checkmark"
-            android:layout_width="18dip"
-            android:layout_height="18dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dip"
-            android:src="@drawable/ic_media_item_sel"/>
-    </RelativeLayout>
 
 </RelativeLayout>

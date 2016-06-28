@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class TakePhotoPreview extends Activity implements OnClickListener {
 
-    private RelativeLayout rl_bottom_bar, rl_title_bar;
+    private RelativeLayout rl_title_bar;
     private ViewPagerFixed viewpager;
     private ArrayList<String> mDataList;
     private Button previewCommit;
@@ -56,8 +56,6 @@ public class TakePhotoPreview extends Activity implements OnClickListener {
 
     private void init() {
         mDataList = getIntent().getStringArrayListExtra(Constants.EXTRA_RESULT);
-        rl_bottom_bar = (RelativeLayout) findViewById(R.id.rl_bottom_bar);
-        rl_bottom_bar.setVisibility(View.GONE);
         rl_title_bar = (RelativeLayout) findViewById(R.id.rl_title_bar);
         viewpager = (ViewPagerFixed) findViewById(R.id.viewpager);
         previewCommit = (Button) findViewById(R.id.preview_commit);

@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,11 +51,33 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by KCrason on 2016/6/7.
  */
 public class KSelectImagesFragment extends Fragment implements View.OnClickListener, SelectImagesCallBack {
 
+    @BindView(R.id.rlayout_parent)
+    RelativeLayout mRelativeLayout;
+
+    @BindView(R.id.grid)
+    GridView mGridView;
+
+    @BindView(R.id.category_btn)
+    TextView mCategoryText;
+
+    // 预览按钮
+    @BindView(R.id.preview)
+    Button mPreviewBtn;
+
+    // 底部View
+    @BindView(R.id.footer)
+    View mPopupAnchorView;
+
+    @BindView(R.id.timeline_area)
+    TextView mTimeLineText;
 
     // 不同loader定义
     private static final int LOADER_ALL = 0;
@@ -68,21 +91,13 @@ public class KSelectImagesFragment extends Fragment implements View.OnClickListe
     private ArrayList<Image> mAllImageList;
 
     // 图片Grid
-    private GridView mGridView;
+
     private Callback mCallback;
     private ImageGridAdapter mImageAdapter;
     private FolderAdapter mFolderAdapter;
     private PopupWindow mFolderPopupWindow;
     private ListView folderList;
 
-    // 时间线
-    private TextView mTimeLineText;
-    // 类别
-    private TextView mCategoryText;
-    // 预览按钮
-    private Button mPreviewBtn;
-    // 底部View
-    private View mPopupAnchorView;
     private int mDesireImageCount;
     private boolean hasFolderGened = false;
     private boolean mIsShowCamera = false;
@@ -112,7 +127,9 @@ public class KSelectImagesFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_select_image, container, false);
+        View view = inflater.inflate(R.layout.fragment_select_image, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -136,18 +153,13 @@ public class KSelectImagesFragment extends Fragment implements View.OnClickListe
         // 是否显示选择指示器
         mImageAdapter.showSelectIndicator(mode == Constants.MODE_MULTI);
 
-        mPopupAnchorView = view.findViewById(R.id.footer);
-
-        mTimeLineText = (TextView) view.findViewById(R.id.timeline_area);
         // 初始化，先隐藏当前timeline
         mTimeLineText.setVisibility(View.GONE);
 
-        mCategoryText = (TextView) view.findViewById(R.id.category_btn);
         // 初始化，加载所有图片
         mCategoryText.setText(getString(R.string.all_image));
         mCategoryText.setOnClickListener(this);
 
-        mPreviewBtn = (Button) view.findViewById(R.id.preview);
         // 初始化，按钮状态初始化,
         if (resultList == null || resultList.size() <= 0) {
             mPreviewBtn.setText(getString(R.string.preview));
@@ -159,7 +171,6 @@ public class KSelectImagesFragment extends Fragment implements View.OnClickListe
         }
         mPreviewBtn.setOnClickListener(this);
 
-        mGridView = (GridView) view.findViewById(R.id.grid);
         mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int state) {
@@ -532,6 +543,7 @@ public class KSelectImagesFragment extends Fragment implements View.OnClickListe
                 if (mFolderPopupWindow.isShowing()) {
                     mFolderPopupWindow.dismiss();
                 } else {
+                    //mFolderPopupWindow.showAtLocation(mRelativeLayout, Gravity.BOTTOM, 0, mPopupAnchorView.getHeight());
                     mFolderPopupWindow.showAsDropDown(mPopupAnchorView);
                     int index = mFolderAdapter.getSelectIndex();
                     index = index == 0 ? index : index - 1;

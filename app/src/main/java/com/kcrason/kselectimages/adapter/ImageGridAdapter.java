@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -232,7 +233,7 @@ public class ImageGridAdapter extends BaseAdapter {
         ImageView image;
 
         @BindView(R.id.checkmark)
-        ImageView indicator;
+        CheckBox indicator;
 
         @BindView(R.id.mask)
         View mask;
@@ -253,11 +254,12 @@ public class ImageGridAdapter extends BaseAdapter {
                 indicator.setVisibility(View.VISIBLE);
                 if (mSelectedImages.contains(data)) {
                     // 设置选中状态
-                    indicator.setImageResource(R.drawable.ic_media_item_sel);
+
+                    indicator.setChecked(true);
                     mask.setVisibility(View.VISIBLE);
                 } else {
                     // 未选择
-                    indicator.setImageResource(R.drawable.ic_media_item_nor);
+                    indicator.setChecked(false);
                     mask.setVisibility(View.GONE);
                 }
             } else {

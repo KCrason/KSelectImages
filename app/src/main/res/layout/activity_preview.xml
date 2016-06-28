@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/rlayout_parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/rlayout_parent"
                 android:background="#080808">
 
     <com.kcrason.kselectimages.widget.ViewPagerFixed
@@ -16,7 +16,7 @@
         android:id="@+id/rl_title_bar"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:background="#bf080808">
+        android:background="#c8393a3f">
 
         <ImageView
             android:id="@+id/back"
@@ -52,16 +52,16 @@
         android:layout_width="fill_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:background="#bf080808">
+        android:background="#c8393a3f">
 
-        <ImageView
+        <CheckBox
             android:id="@+id/preview_checkmark"
-            android:layout_width="18dip"
-            android:layout_height="18dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dip"
-            android:src="@drawable/ic_media_item_sel"/>
+            android:focusable="false"/>
     </RelativeLayout>
 
 </RelativeLayout>

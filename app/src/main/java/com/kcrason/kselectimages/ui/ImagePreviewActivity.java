@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -66,7 +66,7 @@ public class ImagePreviewActivity extends Activity {
     Button mPreviewCommit;
 
     @BindView(R.id.preview_checkmark)
-    ImageView mPreviewCheckMark;
+    CheckBox mPreviewCheckMark;
 
     @BindView(R.id.tv_image_number)
     TextView mImageNumber;
@@ -97,9 +97,9 @@ public class ImagePreviewActivity extends Activity {
             }
             mImageNumber.setText((currentPosition + 1) + "/" + mAllImagesList.size());
             if (tempImagePath.containsValue(mAllImagesList.get(0).path)) {
-                mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_sel);
+                mPreviewCheckMark.setChecked(true);
             } else {
-                mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_nor);
+                mPreviewCheckMark.setChecked(false);
             }
         }
         mViewPagerFixed.addOnPageChangeListener(pageChangeListener);
@@ -159,16 +159,16 @@ public class ImagePreviewActivity extends Activity {
             if (isPreviewAll) {
                 mImageNumber.setText((currentPosition + 1) + "/" + mAllImagesList.size());
                 if (tempImagePath.containsKey(mAllImagesList.get(arg0).path)) {
-                    mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_sel);
+                    mPreviewCheckMark.setChecked(true);
                 } else {
-                    mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_nor);
+                    mPreviewCheckMark.setChecked(false);
                 }
             } else {
                 mImageNumber.setText((currentPosition + 1) + "/" + mDataList.size());
                 if (tempImagePath.containsKey(mDataList.get(arg0))) {
-                    mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_sel);
+                    mPreviewCheckMark.setChecked(true);
                 } else {
-                    mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_nor);
+                    mPreviewCheckMark.setChecked(false);
                 }
             }
         }
@@ -307,7 +307,7 @@ public class ImagePreviewActivity extends Activity {
         if (isPreviewAll) {
             imagePath = mAllImagesList.get(currentPosition).path;
             if (tempImagePath.containsKey(imagePath)) {
-                mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_nor);
+                mPreviewCheckMark.setChecked(false);
                 tempImagePath.remove(imagePath);
             } else {
                 // 如果选择的图片大于9张则无法继续选择图片
@@ -315,16 +315,16 @@ public class ImagePreviewActivity extends Activity {
                     SnackBarUtils.showSnackBar(mParentView, getString(R.string.image_amount_limit));
                     return;
                 }
-                mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_sel);
+                mPreviewCheckMark.setChecked(true);
                 tempImagePath.put(imagePath, imagePath);
             }
         } else {
             imagePath = mDataList.get(currentPosition);
             if (tempImagePath.containsKey(imagePath)) {
-                mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_nor);
+                mPreviewCheckMark.setChecked(false);
                 tempImagePath.remove(imagePath);
             } else {
-                mPreviewCheckMark.setImageResource(R.drawable.ic_media_item_sel);
+                mPreviewCheckMark.setChecked(true);
                 tempImagePath.put(imagePath, imagePath);
             }
         }
