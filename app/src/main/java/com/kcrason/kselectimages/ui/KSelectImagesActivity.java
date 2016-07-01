@@ -1,7 +1,9 @@
 package com.kcrason.kselectimages.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -18,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -161,6 +164,18 @@ public class KSelectImagesActivity extends FragmentActivity implements Callback 
     @Override
     public void onCameraShot(File imageFile) {
         if (imageFile != null) {
+            /**
+             * 插入到系统图库
+             */
+            try {
+                MediaStore.Images.Media.insertImage(getContentResolver(), imageFile.getAbsolutePath(), imageFile.getName(), null);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                        Uri.parse("file://" + imageFile.getAbsolutePath()));
+                sendBroadcast(intent);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             Intent data = new Intent(KSelectImagesActivity.this, TakePhotoPreview.class);
             resultList.add(imageFile.getAbsolutePath());
             data.putStringArrayListExtra(Constants.EXTRA_RESULT, resultList);
